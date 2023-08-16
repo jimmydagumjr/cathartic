@@ -89,6 +89,7 @@ header {
 .menu-wrapper {
   height: 5.6rem;
   border-radius: 1.6rem;
+  overflow: hidden;
 }
 
 @supports (height: 100dvh) {
@@ -144,9 +145,29 @@ header {
   align-items: center;
 }
 
-.cathartic-logo {
-  font-size: 2rem;
+.logo {
+  width: 100%;
+  height: 100%;
 }
+
+.cathartic-logo {
+  justify-content: center;
+  font-size: 2.2rem;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), -webkit-transform .6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.line-logo {
+  height: 5.6rem;
+  justify-content: center;
+  font-size: 5rem;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), -webkit-transform .6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(0);
+}
+
+.-flip {
+  transform: translateY(-100%);
+}
+
 
 
 .menu-btn {
