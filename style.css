@@ -61,24 +61,34 @@ element {
 
 
 body {
-  height: 100vh;
+  height: 1000vh;
   color: var(--black);
   background-color: var(--primarycolor);
 }
 
+header {
+  z-index: 100000;
+  top: 0;
+  left: 0;
+}
+
 .mainmenu {
-  width: 100vw;
-  height: 10vw;
+  /*width: 100vw;*/
+  height: 5.6rem;
+  position: sticky;
+  /*background-color: #1f1f1e;*/
+  border-radius: 1rem;
 }
 
 .menu-container {
-  position: relative;
+  position: sticky;
   padding: 1.6rem 1.6rem 0;
   box-sizing: border-box;
 }
 
 .menu-wrapper {
   height: 5.6rem;
+  border-radius: 1.6rem;
 }
 
 @supports (height: 100dvh) {
