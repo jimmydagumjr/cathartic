@@ -61,6 +61,7 @@ element {
 
 
 body {
+  height: 100vh;
   color: var(--black);
   background-color: var(--primarycolor);
 }
@@ -119,6 +120,25 @@ body {
   align-items: center;
 }
 
+.primary-start {
+  justify-content: left;
+}
+
+.primary-end {
+  justify-content: right;
+}
+
+.primary-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cathartic-logo {
+  font-size: 2rem;
+}
+
+
 .menu-btn {
   background-color: transparent;
   font-size: 1.4rem;
@@ -129,6 +149,7 @@ body {
   font-weight: bold;
   line-height: 1;
   cursor: pointer;
+  border: none;
 }
 
 .cathartic-logo {
