@@ -1,4 +1,4 @@
-window.addEventListener("scroll", function() {
+window.addEventListener("scroll", () => {
     /*
     let header = document.querySelector(".mainmenu");
     header.classList.toggle("sticky", window.scrollY > 0);
