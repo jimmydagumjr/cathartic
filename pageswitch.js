@@ -1,5 +1,5 @@
 const active = "active-page",
-    delay = 1000;
+    delay = 500; //delay in ms
 
 const musicBtn = document.querySelector(".musicMenu"),
     photobookBtn = document.querySelector(".photoMenu");
@@ -18,6 +18,11 @@ musicBtn.addEventListener("click", () => {
     }
     //if on photobook page, do photobook page remove animation
     if (photoPage.classList.contains(active)) {
+        // if it contains transformation classes, reset state
+        if (photoContainer.classList.contains("page-switch-down" && "page-switch-up")) {
+            slideDown(photoContainer);
+            slideUp(photoContainer);
+        }
         slideDown(photoContainer);
         setTimeout(function() {
             toggleHide(photoPage);
@@ -32,6 +37,9 @@ musicBtn.addEventListener("click", () => {
     setTimeout(function() {
         slideUp(musicContainer);
     }, delay);
+    //resetAnimation(musicContainer);
+    //musicContainer.addEventListener()
+    
 })
 
 //photobook button click event
@@ -42,6 +50,11 @@ photobookBtn.addEventListener("click", () => {
     }
     //if on music page, do music page remove animation
     if (musicPage.classList.contains(active)) {
+        // if it contains transformation classes, reset state
+        if (musicContainer.classList.contains("page-switch-down" && "page-switch-up")) {
+            slideDown(musicContainer);
+            slideUp(musicContainer);
+        }
         slideDown(musicContainer);
         setTimeout(function() {
             toggleHide(musicPage);
@@ -72,4 +85,9 @@ function toggleHide(e) {
 
 function toggleActive(e) {
     e.classList.toggle(active);
+}
+
+function resetAnimation(e) {
+    e.classList.toggle("page-switch-down");
+    e.classList.toggle("page-switch-up");
 }
