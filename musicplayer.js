@@ -9,6 +9,7 @@ const progressBar = document.querySelector(".bar"),
 const volumeBtn = document.querySelector("#volume"),
   volumeMuteBtn = document.querySelector("#volume-mute");
 
+
 //toggle menu from song to playlist & vice versa
 menuBtn.addEventListener("click", () => {
   container.classList.toggle("active");
@@ -32,7 +33,29 @@ let playing = false,
   favorite = [],
   audio = new Audio();
 
+const songsEndpoint = "https://gist.githubusercontent.com/jimmydagumjr/4c2e5e07cec916b2457418de6eda8e42/raw/a9073045d9b25a43c54878eaf5dad3d57a413bd6/catharticsongs.JSON";
 
+/*
+const getData = async () => {
+  const response = await fetch(songsEndpoint);
+  //error handle
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  //convert data to json
+  const data = await response.json();
+  //Array.fromAsync(data).then((songs) => console.log(songs));
+  return data;
+}
+
+const addSongs = async () => {
+  songs = await getData();
+  console.log(songs);
+  updatePlaylist(songs);
+  return songs;
+}
+addSongs();
+*/
 
 const songs = [
   {
@@ -87,6 +110,7 @@ const songs = [
   
 ];
 
+
 const playlistContainer = document.querySelector("#playlist"),
   infoWrapper = document.querySelector(".info"),
   coverImage = document.querySelector(".cover-image"),
@@ -102,13 +126,9 @@ function init() {
     updatePlaylist(songs);
     loadSong(currentSong);
   });
-
-  //updatePlaylist(songs);
-  //loadSong(currentSong);
 }
 
 init();
-
 
 
 function updatePlaylist(songs) {

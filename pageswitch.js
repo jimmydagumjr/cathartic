@@ -63,6 +63,7 @@ photobookBtn.addEventListener("click", () => {
         toggleActive(musicPage);
     }
     //toggle on photobook page active class
+    slideDown(photoContainer);
     toggleActive(photoPage);
     toggleHide(photoPage);
     toggleHide(photoContainer);

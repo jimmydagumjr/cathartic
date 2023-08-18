@@ -67,6 +67,7 @@ element {
 }
 
 body {
+  margin: 0;
   height: 100vh;
   color: var(--black);
   background-color: var(--primarycolor);
@@ -229,10 +230,70 @@ header {
 }
 
 
+/*photobook*/
+
+.photo-body {
+  max-width: 120rem;
+  /*width: min(80%, 1200px);*/
+  margin-inline: auto;
+  padding-top: 5%;
+}
+
+.photo-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+}
+
+.card {
+  padding: 1rem;
+}
+
+img, picture {
+  max-width: 100%;
+  display: block;
+}
+
+.card__img-container {
+  border-radius: 1.4rem;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.card__img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.card__details {
+  background-color: var(--white);
+  border-radius: 1.4rem;
+  padding: 1rem 1.6rem;
+  text-align: left;
+  align-self: end;
+}
+
+.card__location {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.card__time {
+  font-family: "Courier";
+  font-size: 1.2rem;
+  color: var(--gray);
+}
 
 
-
-
+/*anything under 1024 px
+@media screen and (max-width: 1024px) {
+  .photo-container {
+    --num-cols: 2;
+    --row-height: 200px;
+  }
+}*/
 
 
 
