@@ -20,8 +20,7 @@ musicBtn.addEventListener("click", () => {
     if (photoPage.classList.contains(active)) {
         // if it contains transformation classes, reset state
         if (photoContainer.classList.contains("page-switch-down" && "page-switch-up")) {
-            slideDown(photoContainer);
-            slideUp(photoContainer);
+            resetAnimation(photoContainer);
         }
         slideDown(photoContainer);
         setTimeout(function() {
@@ -30,7 +29,7 @@ musicBtn.addEventListener("click", () => {
         }, delay);
         toggleActive(photoPage);
     }
-    //toggle on photobook page active class
+    //toggle on music page active class
     toggleActive(musicPage);
     toggleHide(musicPage);
     toggleHide(musicContainer);
@@ -52,8 +51,7 @@ photobookBtn.addEventListener("click", () => {
     if (musicPage.classList.contains(active)) {
         // if it contains transformation classes, reset state
         if (musicContainer.classList.contains("page-switch-down" && "page-switch-up")) {
-            slideDown(musicContainer);
-            slideUp(musicContainer);
+            resetAnimation(musicContainer);
         }
         slideDown(musicContainer);
         setTimeout(function() {
@@ -63,7 +61,7 @@ photobookBtn.addEventListener("click", () => {
         toggleActive(musicPage);
     }
     //toggle on photobook page active class
-    slideDown(photoContainer);
+    //slideDown(photoContainer);
     toggleActive(photoPage);
     toggleHide(photoPage);
     toggleHide(photoContainer);
@@ -89,6 +87,6 @@ function toggleActive(e) {
 }
 
 function resetAnimation(e) {
-    e.classList.toggle("page-switch-down");
-    e.classList.toggle("page-switch-up");
+    e.classList.remove("page-switch-down");
+    e.classList.remove("page-switch-up");
 }

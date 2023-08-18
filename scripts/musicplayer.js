@@ -9,22 +9,33 @@ const progressBar = document.querySelector(".bar"),
 const volumeBtn = document.querySelector("#volume"),
   volumeMuteBtn = document.querySelector("#volume-mute");
 
+const playlistContainer = document.querySelector("#playlist"),
+  infoWrapper = document.querySelector(".info"),
+  coverImage = document.querySelector(".cover-image"),
+  currentSongTitle = document.querySelector(".current-song-title"),
+  currentFavorite = document.querySelector("#current-favorite");
 
-//toggle menu from song to playlist & vice versa
-menuBtn.addEventListener("click", () => {
-  container.classList.toggle("active");
-});
+//scroll effect on hover for playlist song if title too long currently not in use(currently not in use)
+const playlistTitle = document.querySelector(".title"),
+  playlistTitleWidth = playlistTitle.offsetWidth;
 
-//open song in spotify
-spotifyBtn.addEventListener("click", () => {
-  //if no spotify url then return and do nothing
-  if (songs[currentSong].url == null) {
-    return;
-  }
-  else {
-    window.open(songs[currentSong].url, '_blank');
-  }
-});
+const playPauseBtn = document.querySelector("#playBtn"),
+  nextBtn = document.querySelector("#next"),
+  prevBtn = document.querySelector("#prev");
+
+const shuffleBtn = document.querySelector("#shuffle");
+
+const repeatBtn = document.querySelector("#repeatBtn"),
+  repeatPlaylistBtn = document.querySelector("#repeat"),
+  repeatSongBtn = document.querySelector("#repeat-one");
+
+const playBtn = document.querySelector("#play"),
+  pauseBtn = document.querySelector("#pause");
+
+const seeker = document.querySelector("#slider");
+
+const hidden = 'hidden',
+  display = 'display';
 
 let playing = false,
   currentSong = 0,
@@ -32,30 +43,6 @@ let playing = false,
   repeat = false,
   favorite = [],
   audio = new Audio();
-
-const songsEndpoint = "https://gist.githubusercontent.com/jimmydagumjr/4c2e5e07cec916b2457418de6eda8e42/raw/a9073045d9b25a43c54878eaf5dad3d57a413bd6/catharticsongs.JSON";
-
-/*
-const getData = async () => {
-  const response = await fetch(songsEndpoint);
-  //error handle
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  //convert data to json
-  const data = await response.json();
-  //Array.fromAsync(data).then((songs) => console.log(songs));
-  return data;
-}
-
-const addSongs = async () => {
-  songs = await getData();
-  console.log(songs);
-  updatePlaylist(songs);
-  return songs;
-}
-addSongs();
-*/
 
 const songs = [
   {
@@ -110,12 +97,131 @@ const songs = [
   
 ];
 
+init();
 
-const playlistContainer = document.querySelector("#playlist"),
-  infoWrapper = document.querySelector(".info"),
-  coverImage = document.querySelector(".cover-image"),
-  currentSongTitle = document.querySelector(".current-song-title"),
-  currentFavorite = document.querySelector("#current-favorite");
+//toggle menu from song to playlist & vice versa
+menuBtn.addEventListener("click", () => {
+  container.classList.toggle("active");
+});
+
+//open song in spotify
+spotifyBtn.addEventListener("click", () => {
+  //if no spotify url then return and do nothing
+  if (songs[currentSong].url == null) {
+    return;
+  }
+  else {
+    window.open(songs[currentSong].url, '_blank');
+  }
+});
+
+//scroll if song title too long (deprecated)
+document.querySelectorAll("#h5title")
+.forEach (item => {
+  //215 = table width in pixels
+  if (item.offsetWidth > playlistTitleWidth) {
+    item.classList.add("scrolled");
+  }
+})
+
+//play, pause, next, prev functionality
+playPauseBtn.addEventListener("click", () => {  
+  if (playing) {
+    //pause if already playing
+    replaceIcon (playBtn, pauseBtn);
+    playing = false;
+    audio.pause();
+  }
+  else {
+    //if not already playing, then play
+    replaceIcon(pauseBtn, playBtn);
+    playing = true;
+    audio.play();
+  }
+});
+
+nextBtn.addEventListener("click", nextSong);
+prevBtn.addEventListener("click", prevSong);
+
+//add to favorite when heart is clicked of current playing song
+currentFavorite.addEventListener("click", () => {
+  currentFavorite.classList.toggle("active");
+  addToFavorites(currentSong);
+});
+
+shuffleBtn.addEventListener("click", shuffleSongs);
+repeatBtn.addEventListener("click", repeatSong);
+
+//repeat functionality for audio
+audio.addEventListener("ended", () => {
+  if (repeat == 1) {
+    //if playlist being repeated play next song
+    nextSong();
+    audio.play();
+  }
+  else if (repeat == 2) {
+      loadSong(currentSong);
+      audio.play();
+  }
+  else {
+    //if repeat off just play playlist once, then stop
+    if (currentSong == songs.length - 1) {
+      //if last song in playlist, stop playing
+      audio.pause();
+      replaceIcon (playBtn, pauseBtn);
+      playing = false;
+    }
+    else {
+      //if not continue to next song
+      nextSong();
+      audio.play();
+    }
+  }
+});
+
+//update progress
+audio.addEventListener("timeupdate", () => {
+  let progressPercent = audio.currentTime / audio.duration * 100;
+  seeker.value = progressPercent;
+});
+
+seeker.addEventListener("input", (e) => {
+  audio.currentTime = e.target.value / 100 * audio.duration;
+});
+
+audio.addEventListener("timeupdate", progress);
+
+volumeBtn.addEventListener("click", toggleVolume);
+volumeMuteBtn.addEventListener("click", toggleVolume);
+
+
+//const songsEndpoint = "https://gist.githubusercontent.com/jimmydagumjr/4c2e5e07cec916b2457418de6eda8e42/raw/a9073045d9b25a43c54878eaf5dad3d57a413bd6/catharticsongs.JSON";
+
+/*
+const getData = async () => {
+  const response = await fetch(songsEndpoint);
+  //error handle
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  //convert data to json
+  const data = await response.json();
+  //Array.fromAsync(data).then((songs) => console.log(songs));
+  return data;
+}
+
+const addSongs = async () => {
+  songs = await getData();
+  console.log(songs);
+  updatePlaylist(songs);
+  return songs;
+}
+addSongs();
+*/
+
+
+/* FUNCTIONS */
+
 
 function init() {
   //set favorites from local storage when DOM loaded
@@ -127,9 +233,6 @@ function init() {
     loadSong(currentSong);
   });
 }
-
-init();
-
 
 function updatePlaylist(songs) {
     
@@ -190,20 +293,6 @@ function updatePlaylist(songs) {
   });    
 }
 
-
-//scroll effect on hover for playlist song if title too long currently not in use
-const playlistTitle = document.querySelector(".title"),
-  playlistTitleWidth = playlistTitle.offsetWidth;
-
-//scroll if song title too long
-document.querySelectorAll("#h5title")
-.forEach (item => {
-  //215 = table width in pixels
-  if (item.offsetWidth > playlistTitleWidth) {
-    item.classList.add("scrolled");
-  }
-})
-
 function formatTime (time) {
   //format time
   let minutes = Math.floor(time / 60);
@@ -243,33 +332,6 @@ function loadSong(num) {
     }      
 }
 
-//play, pause, next, prev functionality
-
-const playPauseBtn = document.querySelector("#playBtn"),
-  nextBtn = document.querySelector("#next"),
-  prevBtn = document.querySelector("#prev");
-
-const playBtn = document.querySelector("#play"),
-  pauseBtn = document.querySelector("#pause");
-
-const hidden = 'hidden',
-  display = 'display';
-  
-playPauseBtn.addEventListener("click", () => {  
-  if (playing) {
-    //pause if already playing
-    replaceIcon (playBtn, pauseBtn);
-    playing = false;
-    audio.pause();
-  }
-  else {
-    //if not already playing, then play
-    replaceIcon(pauseBtn, playBtn);
-    playing = true;
-    audio.play();
-  }
-});
-
 function nextSong() {
   //turn repeat song off on skip
   if (repeat == 2) {
@@ -299,8 +361,6 @@ function nextSong() {
       audio.play();
     }
 }
-
-nextBtn.addEventListener("click", nextSong);
 
 function prevSong() {
   //turn repeat song off on skip
@@ -339,8 +399,6 @@ function prevSong() {
   }
 }
 
-prevBtn.addEventListener("click", prevSong);
-
 function addToFavorites(index) {
   //check if already in favorites, if so then remove
   if (favorite.includes(index)) {
@@ -360,27 +418,14 @@ function addToFavorites(index) {
   //updatePlaylist(songs);
 }
 
-//add to favorite when heart is clicked of current playing song
-
-currentFavorite.addEventListener("click", () => {
-  currentFavorite.classList.toggle("active");
-  addToFavorites(currentSong);
-});
-
 //shuffle functionality
-
-const shuffleBtn = document.querySelector("#shuffle");
-
 function shuffleSongs() {
   //if shuffle false make it true & vice versa
   shuffle = !shuffle;
   shuffleBtn.classList.toggle("active");
 }
 
-shuffleBtn.addEventListener("click", shuffleSongs);
-
 //if shuffle true, shuffle songs when playing next or prev
-
 function shuffleFunc() {
   if (shuffle) {
     //select random song from playlist
@@ -390,11 +435,6 @@ function shuffleFunc() {
 }
 
 //repeat functionality
-
-const repeatBtn = document.querySelector("#repeatBtn"),
-  repeatPlaylistBtn = document.querySelector("#repeat"),
-  repeatSongBtn = document.querySelector("#repeat-one");
-
 function repeatSong() {
   if (repeat == 0) {
     //if repeat is off turn repeat on
@@ -417,50 +457,7 @@ function repeatSong() {
   }
 }
 
-repeatBtn.addEventListener("click", repeatSong);
-
-//repeat functionality audio
-
-
-audio.addEventListener("ended", () => {
-  if (repeat == 1) {
-    //if playlist being repeated play next song
-    nextSong();
-    audio.play();
-  }
-  else if (repeat == 2) {
-      loadSong(currentSong);
-      audio.play();
-  }
-  else {
-    //if repeat off just play playlist once, then stop
-    if (currentSong == songs.length - 1) {
-      //if last song in playlist, stop playing
-      audio.pause();
-      replaceIcon (playBtn, pauseBtn);
-      playing = false;
-    }
-    else {
-      //if not continue to next song
-      nextSong();
-      audio.play();
-    }
-  }
-});
-
 //progress function
-
-const seeker = document.querySelector("#slider");
-
-audio.addEventListener("timeupdate", () => {
-  let progressPercent = audio.currentTime / audio.duration * 100;
-  seeker.value = progressPercent;
-});
-
-seeker.addEventListener("input", (e) => {
-  audio.currentTime = e.target.value / 100 * audio.duration;
-});
-
 function progress() {
   //retrieve duration and current time from audio
   let {duration, currentTime} = audio;
@@ -478,10 +475,6 @@ function progress() {
   currentTimeEl.innerHTML = formatTime(currentTime);
 }
 
-audio.addEventListener("timeupdate", progress);
-
-
-
 //mute & unmute function
 function toggleVolume() {
   let volume = audio.volume;
@@ -496,11 +489,6 @@ function toggleVolume() {
     volumeMuteBtn.classList.remove("active");
   }
 }
-
-
-volumeBtn.addEventListener("click", toggleVolume);
-volumeMuteBtn.addEventListener("click", toggleVolume);
-
 
 //replace svg icon function, display first element, hide second element
 function replaceIcon (e1, e2) {
