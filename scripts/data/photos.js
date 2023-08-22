@@ -1,5 +1,10 @@
 const photos = [  
     {
+        location: "scv, ca",
+        time: new Date("8/20/23"),
+        src: "photos/IMG-3472.jpg"
+    },
+    {
         location: "home, nv",
         time: new Date("8/2/23"),
         src: "photos/IMG_3302.jpg"
