@@ -155,6 +155,7 @@ header {
 }
 
 .primary-center {
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -166,6 +167,7 @@ header {
 }
 
 .cathartic-logo {
+  text-align: center;
   justify-content: center;
   align-items: center;
   font-size: 2.2rem;
@@ -409,7 +411,7 @@ object {
   and (-webkit-min-device-pixel-ratio: 3)
   and (orientation: portrait) { 
     .music-container {
-      height: 50rem;
+      height: 55rem;
     }
 }
 

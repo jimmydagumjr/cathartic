@@ -24,7 +24,7 @@ function updatePhotobook(photos) {
         div.innerHTML = `
         <div class="card">
           <div class="card__img-container">
-            <img class="card__img" src="${src}">
+            <img class="card__img" loading="lazy" src="${src}">
           </div>
           <div class="card__details">
             <h2 class="card__location">${location}</h2>
