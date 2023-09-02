@@ -1,4 +1,19 @@
-const photos = [  
+const photos = [
+    {
+        location: "barrick museum, nv",
+        time: new Date("9/1/23"),
+        src: "photos/IMG-3575.jpg"
+    },
+    {
+        location: "barrick museum, nv",
+        time: new Date("9/1/23"),
+        src: "photos/IMG-3568.jpg"
+    },
+    {
+        location: "lv, nv",
+        time: new Date("8/31/23"),
+        src: "photos/IMG-3563.jpg"
+    },
     {
         location: "scv, ca",
         time: new Date("8/20/23"),
